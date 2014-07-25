@@ -61,7 +61,7 @@ var localFunctions = function() {
     /**
      * Reverse and complement the sequence.
      */
-    pub.reverseAndComplementSequence = function(sequence) {
+    pub.getReverseComplement = function(sequence) {
         var reverse = pub.getReverse(sequence);
         var result = pub.getComplement(reverse);
         return result;
