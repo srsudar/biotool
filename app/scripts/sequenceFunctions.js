@@ -32,6 +32,9 @@ var localFunctions = function() {
         result.A = 'T';
         result.C = 'G';
         result.G = 'C';
+        // and now one-way conversion for u.
+        result.u = 'a';
+        result.U = 'A';
         return result;
     };
 
