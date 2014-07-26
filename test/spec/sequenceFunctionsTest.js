@@ -1,4 +1,4 @@
-/* global describe, it, assert, sequenceFunctions */
+/* global describe, it, assert */
 
 (function() {
     'use strict';
@@ -213,7 +213,7 @@
     'CATCACCCCCACCTGGTGGGGGTGAGAAGGCGAAGTCTGAAGCCAGGTGTCCAGCCATGGGGAAGGTGGG' +
     'CACCCCGAGCCGGGGGCCTGGTGGAAAGACGGCTCACCTAGGGACGGTTTCACCTC';
 
-    var functions = sequenceFunctions;
+    var functions = window.sequenceFunctions;
 
     describe('reverse', function() {
         
