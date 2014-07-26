@@ -3,7 +3,7 @@
 console.log('\'Allo \'Allo! Content script');
 
 function pasteContent(toBePasted) {
-    document.activeElement.value = toBePasted;
+    document.activeElement.value += toBePasted;
 }
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
