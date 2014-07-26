@@ -21,22 +21,28 @@ function genericOnClick(info, tab) {
 // This is following the example set forth in:
 // https://developer.chrome.com/extensions/samples#search:
 var parentItem = chrome.contextMenus.create(
-        {'title': 'BioTool test parent item'});
+    {
+        'title': 'BioTool test parent item',
+        'contexts': ['editable']
+    });
 var pasteReverse = chrome.contextMenus.create(
     {
         'title': 'Paste Reverse',
         'parentId': parentItem,
-        'onclick': genericOnClick
+        'onclick': genericOnClick,
+        'contexts': ['editable']
     });
 var pasteComplement = chrome.contextMenus.create(
     {
         'title': 'Paste Complement',
         'parentId': parentItem,
-        'onclick': genericOnClick
+        'onclick': genericOnClick,
+        'contexts': ['editable']
     });
 var pasteReverseComplement = chrome.contextMenus.create(
     {
         'title': 'Paste Reverse Complement',
         'parentId': parentItem,
-        'onclick': genericOnClick
+        'onclick': genericOnClick,
+        'contexts': ['editable']
     });
