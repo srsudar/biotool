@@ -34,14 +34,24 @@ function onClickHandler(info, tab) {
     console.log('info: ' + JSON.stringify(info));
     console.log('tab: ' + JSON.stringify(tab));
     var clipboardContent = getContentFromClipboard();
+    var functions = window.sequenceFunctions;
+    if (functions === undefined) {
+        console.log('could not load sequence functions, will cause errors');
+    }
     console.log('clipboardContent: ' + clipboardContent);
     if (info.menuItemId === 'pasteReverse') {
         console.log('clicked paste reverse');
-        sendPasteToContentScript(clipboardContent);
+        var reverse = functions.getReverse(clipboardContent);
+        sendPasteToContentScript(reverse);
     } else if (info.menuItemid === 'pasteComplement') {
         console.log('clicked paste complement');
+        var complement = functions.getComplement(clipboardContent);
+        sendPasteToContentScript(complement);
     } else if (info.menuItemId === 'pasteReverseComplement') {
         console.log('clicked paste reverse complement');
+        var reverseComplement =
+            functions.getReverseComplement(clipboardContent);
+        sendPasteToContentScript(reverseComplement);
     } else {
         console.log('unrecognized context menu id: ' + info.menuItemId);
     }
