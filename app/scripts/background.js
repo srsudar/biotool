@@ -37,8 +37,7 @@ function onClickHandler(info, tab) {
     console.log('clipboardContent: ' + clipboardContent);
     if (info.menuItemId === 'pasteReverse') {
         console.log('clicked paste reverse');
-        var pasted = document.execCommand('paste');
-        console.log('clicked it, pasted is: ' + pasted);
+        sendPasteToContentScript(clipboardContent);
     } else if (info.menuItemid === 'pasteComplement') {
         console.log('clicked paste complement');
     } else if (info.menuItemId === 'pasteReverseComplement') {
