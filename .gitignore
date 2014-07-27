@@ -39,5 +39,6 @@ node_modules
 
 # chrome extensions
 app.pem
-# To ignore the unpacked, zipped extension folder required by the chrome store.
-app.zip
+
+# The release versions of the zips uploaded to the chrome store.
+releases/
