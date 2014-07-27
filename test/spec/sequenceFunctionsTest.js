@@ -346,5 +346,36 @@
 
     });
 
+    describe('isValidNonBase', function() {
+
+        it('Exists and is a function', function() {
+            assert.isFunction(functions.isValidNonBase);
+        });
+
+        it('All digits are valid', function() {
+            for (var i = 0; i < 10; i++) {
+                var isValid = functions.isValidNonBase(i.toString());
+                assert.isTrue(isValid);
+            }
+        });
+
+        it('Newline is valid', function() {
+            assert.isTrue(functions.isValidNonBase('\n'));
+        });
+
+        it('Tab is valid', function() {
+            assert.isTrue(functions.isValidNonBase('\t'));
+        });
+
+        it('Carriage return is valid', function() {
+            assert.isTrue(functions.isValidNonBase('\r'));
+        });
+
+        it('Space is valid', function() {
+            assert.isTrue(functions.isValidNonBase(' '));
+        });
+    
+
+    });
 
 })();

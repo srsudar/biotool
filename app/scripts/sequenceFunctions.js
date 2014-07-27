@@ -3,8 +3,21 @@
 
 var localFunctions = function() {
 
+    // The regular expression for valid single bases.
+    // For now this is just white space and digits.
+    var validSingleBaseRE = /\s|\d/;
+
     // This will be the object we export.
     var pub = {};
+
+    /**
+     * Remove all white space and digits. Intended to permit easier copying
+     * from sequences that include digits or delimiting spaces.
+     */
+    pub.getClean = function(sequence) {
+        var result = '';
+
+    };
 
     /**
      * Just reverse the string.
@@ -15,6 +28,12 @@ var localFunctions = function() {
             result += sequence[i];
         }
         return result;
+    };
+
+    pub.isValidNonBase = function(character) {
+        // we are going to accept whitespace and numbers.
+        // We're going to rely on the regular expression defined above.
+        return character.match(validSingleBaseRE) !== null;
     };
 
     /**
