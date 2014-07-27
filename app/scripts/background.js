@@ -1,5 +1,7 @@
 'use strict';
 
+console.log('The BioTool event page is up and running!');
+
 // A gotcha of sorts with chrome extensions involving clipboard actions is that
 // only the content scripts can interact with the page that a user loads. This
 // means that we can't put our calls to actually paste into the page in the
@@ -28,6 +30,18 @@ function getContentFromClipboard() {
 }
 
 /**
+ * Send the value that should be pasted to the content script.
+ */
+function sendPasteToContentScript(toBePasted) {
+    // We first need to find the active tab and window and then send the data
+    // along. This is based on:
+    // https://developer.chrome.com/extensions/messaging
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, {data: toBePasted});
+    });
+}
+
+/**
  * The function that will handle our context menu clicks.
  */
 function onClickHandler(info, tab) {
@@ -39,7 +53,11 @@ function onClickHandler(info, tab) {
         console.log('could not load sequence functions, will cause errors');
     }
     console.log('clipboardContent: ' + clipboardContent);
-    if (info.menuItemId === 'pasteReverse') {
+    if (info.menuItemId === 'pasteClean') {
+        console.log('clicked paste clean');
+        var clean = functions.getClean(clipboardContent);
+        sendPasteToContentScript(clean);
+    } else if (info.menuItemId === 'pasteReverse') {
         console.log('clicked paste reverse');
         var reverse = functions.getReverse(clipboardContent);
         sendPasteToContentScript(reverse);
@@ -57,17 +75,6 @@ function onClickHandler(info, tab) {
     }
 }
 
-/**
- * Send the value that should be pasted to the content script.
- */
-function sendPasteToContentScript(toBePasted) {
-    // We first need to find the active tab and window and then send the data
-    // along. This is based on:
-    // https://developer.chrome.com/extensions/messaging
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, {data: toBePasted});
-    });
-}
 chrome.contextMenus.onClicked.addListener(onClickHandler);
 
 // we're going to set up the context menu tree at install time.
@@ -82,37 +89,32 @@ chrome.runtime.onInstalled.addListener(function (details) {
     // https://developer.chrome.com/extensions/samples#search:
     var parentItem = chrome.contextMenus.create(
         {
-            'title': 'BioTool test parent item',
+            'title': 'BioTool',
             'id': 'parentItem',
             'contexts': ['editable']
         });
-    var pasteReverse = chrome.contextMenus.create(
+    chrome.contextMenus.create(
         {
-            'title': 'Paste Reverse',
+            'title': 'Paste Clean',
+            'id': 'pasteClean',
+            'parentId': parentItem,
+            'contexts': ['editable']
+        });
+    chrome.contextMenus.create(
+        {
+            'title': 'Paste Clean Reverse',
             'id': 'pasteReverse',
             'parentId': parentItem,
             'contexts': ['editable']
         });
-        //},
-        //function() {
-            //if (chrome.extension.lastError) {
-                //console.log(
-                    //'Got unexpected error in pasteReverse item: ' +
-                    //chrome.extension.lastError.message);
-            //}
-            //console.log('calling paste');
-            ////document.getElementsByTagName('textarea')[0].focus();
-            ////document.execCommand('paste');
-            ////alert('hello');
-        //});
-    var pasteComplement = chrome.contextMenus.create(
+    chrome.contextMenus.create(
         {
             'title': 'Paste Complement',
             'id': 'pasteComplement',
             'parentId': parentItem,
             'contexts': ['editable']
         });
-    var pasteReverseComplement = chrome.contextMenus.create(
+    chrome.contextMenus.create(
         {
             'title': 'Paste Reverse Complement',
             'id': 'pasteReverseComplement',
@@ -120,6 +122,3 @@ chrome.runtime.onInstalled.addListener(function (details) {
             'contexts': ['editable']
         });
 });
-
-console.log('\'Allo \'Allo! Event Page');
-
