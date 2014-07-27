@@ -1,4 +1,4 @@
-# biotool
+# BioTool
 
 > A Chrome extension for biologists.
 
