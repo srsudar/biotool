@@ -4,6 +4,11 @@
 logs
 *.log
 
+# grunt
+.tmp/
+dist/
+package/
+
 # Runtime data
 pids
 *.pid
