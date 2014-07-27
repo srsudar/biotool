@@ -6,9 +6,51 @@ var localFunctions = function() {
     // The regular expression for valid single bases.
     // For now this is just white space and digits.
     var validSingleBaseRE = /\s|\d/;
+    
+    var invalidBaseResponse = 'unrecognized base: ';
 
     // This will be the object we export.
     var pub = {};
+
+    // This will be the object housing the private methods.
+    var pri = {};
+
+    /**
+     * Return true if the base is a key on the map. This method is private
+     * because, even though it is testable, we aren't going to export it. It
+     * accepts a map in order to remain more efficient and not construct the
+     * object with every call.
+     */
+    pri.isValidBase = function(base, map) {
+        var complementChar = map[base];
+        return complementChar !== undefined;
+    };
+
+    /**
+     * Take the base and a valid complement map. Returns the value that should
+     * be appended to a valid base string. If the base is a valid non base, the
+     * empty string is returned. If it is a base and isComplement is true,
+     * return the complement, else return the base. If the character is not a
+     * base and is not a valid non base character, return null.
+     *
+     * In other words, if this is null, you've encountered a bad base and you
+     * should return the unrecognized base message. Otherwise, just append it
+     * to your output.
+     */
+    pri.getValidCharacterToAppend = function(character, map, isComplement) {
+        if (pri.isValidBase(character, map)) {
+            if (isComplement) {
+                return map[character];
+            } else {
+                return character;
+            }
+        } else if (pub.isValidNonBase(character)) {
+            return '';
+        } else {
+            // We've encountered an invalid base.
+            return null;
+        }
+    };
 
     /**
      * Remove all white space and digits. Intended to permit easier copying
@@ -19,29 +61,37 @@ var localFunctions = function() {
         var complementMap = pub.getComplementMap();
         for (var i = 0; i < sequence.length; i++) {
             var currentChar = sequence[i];
-            var complementChar = complementMap[currentChar];
-            // We will only accept valid bases or valid non-bases.
-            if (complementChar === undefined) {
-                // If it IS a valid non base, we just won't do anything.
-                if (!pub.isValidNonBase(currentChar)) {
-                    return 'unrecognized base: ' + currentChar;
-                }
+            var toAppend = pri.getValidCharacterToAppend(
+                    currentChar,
+                    complementMap,
+                    false);
+            if (toAppend === null) {
+                return invalidBaseResponse + currentChar;
             } else {
-                result += currentChar;
+                result += toAppend;
             }
         }
         return result;
     };
 
     /**
-     * Just reverse the string.
+     * Reverse the string, cleaning for valid bases as we go. If an invalid
+     * string is encountered, we return the standard invalid response result.
      */
     pub.getReverse = function(sequence) {
         var result = '';
-        var map = pub.getComplementMap();
-        
+        var complementMap = pub.getComplementMap();
         for (var i = sequence.length - 1; i > -1; i--) {
-            result += sequence[i];
+            var currentChar = sequence[i];
+            var toAppend = pri.getValidCharacterToAppend(
+                    currentChar,
+                    complementMap,
+                    false);
+            if (toAppend === null) {
+                return invalidBaseResponse + currentChar;
+            } else {
+                result += toAppend;
+            }
         }
         return result;
     };
@@ -80,18 +130,17 @@ var localFunctions = function() {
      */
     pub.getComplement = function(sequence) {
         var result = '';
-        var map = pub.getComplementMap();
+        var complementMap = pub.getComplementMap();
         for (var i = 0; i < sequence.length; i++) {
-            var currentBase = sequence[i];
-            var complementBase = map[currentBase];
-            if (complementBase === undefined) {
-                // Only protest if it is an invalid non-base.
-                if (!pub.isValidNonBase(currentBase)) {
-                    console.log('unrecognized base: ' + currentBase);
-                    return 'unrecognized base: ' + currentBase;
-                }
+            var currentChar = sequence[i];
+            var toAppend = pri.getValidCharacterToAppend(
+                    currentChar,
+                    complementMap,
+                    true);
+            if (toAppend === null) {
+                return invalidBaseResponse + currentChar;
             } else {
-                result += complementBase;
+                result += toAppend;
             }
         }
         return result;
@@ -101,8 +150,20 @@ var localFunctions = function() {
      * Reverse and complement the sequence.
      */
     pub.getReverseComplement = function(sequence) {
-        var reverse = pub.getReverse(sequence);
-        var result = pub.getComplement(reverse);
+        var result = '';
+        var complementMap = pub.getComplementMap();
+        for (var i = sequence.length - 1; i > -1; i--) {
+            var currentChar = sequence[i];
+            var toAppend = pri.getValidCharacterToAppend(
+                currentChar,
+                complementMap,
+                true);
+            if (toAppend === null) {
+                return invalidBaseResponse + currentChar;
+            } else {
+                result += toAppend;
+            }
+        }
         return result;
     };
 
