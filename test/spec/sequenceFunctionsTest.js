@@ -4,6 +4,8 @@
     'use strict';
 
     var allValidBases = 'atcgATCGuU';
+    // A sequence with a single invalid base: f.
+    var sequenceWithInvalidBase = 'atcfccgg';
 
     var oct4 =
     'GAGGTGAAACCGTCCCTAGGTGAGCCGTCTTTCCACCAGGCCCCCGGCTCGGGGTGCCCACCTTCCCCAT' +
@@ -380,6 +382,13 @@
             assert.equal(actual, target);
         });
 
+        it('Returns correct response in event of invalid base', function() {
+            var original = sequenceWithInvalidBase;
+            var actual = functions.getComplement(original);
+            var target = 'unrecognized base: f';
+            assert.equal(actual, target);
+        });
+
         it('complements simple string correctly matching case', function() {
             var original = allValidBases;
             var target = 'tagcTAGCaA';
@@ -408,7 +417,14 @@
         it('Handles empty string', function() {
             var target = '';
             var actual = functions.getReverseComplement('');
-            assert.equal(target, actual);
+            assert.equal(actual, target);
+        });
+
+        it('Returns correct response in event of invalid base', function() {
+            var original = sequenceWithInvalidBase;
+            var target = 'unrecognized base: f';
+            var actual = functions.getReverseComplement(original);
+            assert.equal(actual, target);
         });
 
         it('Handles simple case', function() {
@@ -443,6 +459,13 @@
 
         it('exists and is a function', function() {
             assert.isFunction(functions.getClean);
+        });
+
+        it('Returns correct response in event of invalid base', function() {
+            var original = sequenceWithInvalidBase;
+            var target = 'unrecognized base: f';
+            var actual = functions.getClean(original);
+            assert.equal(actual, target);
         });
 
         it('accepts empty string', function() {

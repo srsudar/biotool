@@ -38,6 +38,8 @@ var localFunctions = function() {
      */
     pub.getReverse = function(sequence) {
         var result = '';
+        var map = pub.getComplementMap();
+        
         for (var i = sequence.length - 1; i > -1; i--) {
             result += sequence[i];
         }
@@ -84,7 +86,7 @@ var localFunctions = function() {
             var complementBase = map[currentBase];
             if (complementBase === undefined) {
                 // Only protest if it is an invalid non-base.
-                if (!pub.isValidNonBase(complementBase)) {
+                if (!pub.isValidNonBase(currentBase)) {
                     console.log('unrecognized base: ' + currentBase);
                     return 'unrecognized base: ' + currentBase;
                 }
