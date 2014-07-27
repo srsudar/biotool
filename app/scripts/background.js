@@ -102,7 +102,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
         });
     chrome.contextMenus.create(
         {
-            'title': 'Paste Clean Reverse',
+            'title': 'Paste Reverse',
             'id': 'pasteReverse',
             'parentId': parentItem,
             'contexts': ['editable']
