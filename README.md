@@ -9,6 +9,10 @@ manipulation for pasting into text fields. When dealing with sequences there is
 often an annoying middle step of pasting a sequence into a complement or
 reverse complement utility. This extension eliminates that step.
 
+<p align="center">
+    <img alt="BioTool at work in a context menu" src="images/contextMenuSample.png">
+</p>
+
 ## Operations
 
 All paste events "clean" the sequence. This removes digits, leaves whitespace,
