@@ -16,7 +16,21 @@ var localFunctions = function() {
      */
     pub.getClean = function(sequence) {
         var result = '';
-
+        var complementMap = pub.getComplementMap();
+        for (var i = 0; i < sequence.length; i++) {
+            var currentChar = sequence[i];
+            var complementChar = complementMap[currentChar];
+            // We will only accept valid bases or valid non-bases.
+            if (complementChar === undefined) {
+                // If it IS a valid non base, we just won't do anything.
+                if (!pub.isValidNonBase(currentChar)) {
+                    return 'unrecognized base: ' + currentChar;
+                }
+            } else {
+                result += currentChar;
+            }
+        }
+        return result;
     };
 
     /**
@@ -33,6 +47,7 @@ var localFunctions = function() {
     pub.isValidNonBase = function(character) {
         // we are going to accept whitespace and numbers.
         // We're going to rely on the regular expression defined above.
+        // String.match returns null if there is no match.
         return character.match(validSingleBaseRE) !== null;
     };
 
@@ -68,8 +83,11 @@ var localFunctions = function() {
             var currentBase = sequence[i];
             var complementBase = map[currentBase];
             if (complementBase === undefined) {
-                console.log('unrecognized base: ' + currentBase);
-                return 'unrecognized base: ' + currentBase;
+                // Only protest if it is an invalid non-base.
+                if (!pub.isValidNonBase(complementBase)) {
+                    console.log('unrecognized base: ' + currentBase);
+                    return 'unrecognized base: ' + currentBase;
+                }
             } else {
                 result += complementBase;
             }
