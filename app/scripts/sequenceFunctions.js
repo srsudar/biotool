@@ -3,9 +3,11 @@
 
 var localFunctions = function() {
 
-    // The regular expression for valid single bases.
+    // The regular expression for valid single characters.
     // For now this is just white space and digits.
-    var validSingleBaseRE = /\s|\d/;
+    var validSingleCharacterRE = /\s|\d/;
+    // The regular expression for a valid single digit.
+    var digitRE = /\d/;
     
     var invalidBaseResponse = 'unrecognized base: ';
 
@@ -21,9 +23,16 @@ var localFunctions = function() {
      * accepts a map in order to remain more efficient and not construct the
      * object with every call.
      */
-    pri.isValidBase = function(base, map) {
-        var complementChar = map[base];
+    pri.isValidBase = function(character, map) {
+        var complementChar = map[character];
         return complementChar !== undefined;
+    };
+
+    /**
+     * Returns true if the character is a digit, else false.
+     */
+    pub.isDigit = function(character) {
+        return character.match(digitRE) !== null;
     };
 
     /**
@@ -45,7 +54,13 @@ var localFunctions = function() {
                 return character;
             }
         } else if (pub.isValidNonBase(character)) {
-            return '';
+            // We will get rid of digits, but leave whitespace.
+            if (pub.isDigit(character)) {
+                return '';
+            } else {
+                // It must be whitespace.
+                return character;
+            }
         } else {
             // We've encountered an invalid base.
             return null;
@@ -100,7 +115,7 @@ var localFunctions = function() {
         // we are going to accept whitespace and numbers.
         // We're going to rely on the regular expression defined above.
         // String.match returns null if there is no match.
-        return character.match(validSingleBaseRE) !== null;
+        return character.match(validSingleCharacterRE) !== null;
     };
 
     /**

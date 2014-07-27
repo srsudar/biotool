@@ -415,7 +415,7 @@
 
         it('Reverse cleans', function() {
             var toReverse = allValidBases + '\n\t\r 1234567890';
-            var target = 'UuGCTAgcta';
+            var target = ' \r\t\nUuGCTAgcta';
             var actual = functions.getReverse(toReverse);
             assert.equal(actual, target);
         });
@@ -578,9 +578,9 @@
             assert.equal(functions.getClean(oct4), oct4);
         });
 
-        it('whittle illegal characters down to nothing', function() {
+        it('whittle valid nonbases down to whitespace', function() {
             var original = '\n\t\r 1234567890';
-            var target = '';
+            var target = '\n\t\r ';
             var actual = functions.getClean(original);
             assert.equal(actual, target, 'should have been empty string');
         });
@@ -614,6 +614,34 @@
 
         it('Space is valid', function() {
             assert.isTrue(functions.isValidNonBase(' '));
+        });
+
+    });
+
+    describe('isDigit', function() {
+
+        it('Exists and is function', function() {
+            assert.isFunction(functions.isDigit);
+        });
+
+        it('Returns true for all digits', function() {
+            for (var i = 0; i < 10; i++) {
+                assert.isTrue(functions.isDigit(i.toString()));
+            }
+        });
+
+        it('Returns false for whitespace', function() {
+            var whitespace = '\n\t\r ';
+            for (var i = 0; i < whitespace.length; i++) {
+                assert.isFalse(functions.isDigit(whitespace[i]));
+            }
+        });
+
+        it('Returns false for letters', function() {
+            var alphabet = 'abcdefghjiklmnopqrstuvwxyz';
+            for (var i = 0; i < alphabet.length; i++) {
+                assert.isFalse(functions.isDigit(alphabet[i]));
+            }
         });
 
     });
