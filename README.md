@@ -67,3 +67,9 @@ am missing, but everything passes in the browser.
 The extension itself consists of an event page (`app/background.html`), in
 Chrome extension terminology, and a content script
 (`app/scripts/contentscript.js`).
+
+Note that although I scaffolded the app using the generator, at least with the
+early versions I'm not using the `grunt build` distribution mechanism to
+produce the production code. This is mainly because there were some issues with
+copying all the necessary images to the distribution directory, and because the
+codebase is so small it won't make much of a difference.
