@@ -13,6 +13,11 @@ reverse complement utility. This extension eliminates that step.
     <img alt="BioTool at work in a context menu" src="images/contextMenuSample.png">
 </p>
 
+It is intended to be lightweight and fast. It doesn't parse anything on the
+clipboard until you ask it to, meaning it won't slow down your regular
+browsing. It only scans sequences once for all actions, so it should stay fast
+even if your sequences get big.
+
 ## Operations
 
 All paste events "clean" the sequence. This removes digits, leaves whitespace,
