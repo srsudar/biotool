@@ -1,10 +1,10 @@
 {
   "appName": {
-    "message": "biotool",
+    "message": "BioTool",
     "description": "The name of the application"
   },
   "appDescription": {
-    "message": "Provides basic functionality that may be useful to biologists, including simple sequence manipulation.",
+    "message": "Provides basic sequence manipulation that may be useful to biologists.",
     "description": "The description of the application"
   }
 }
