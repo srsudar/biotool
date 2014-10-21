@@ -4,10 +4,13 @@
 
 ## Overview
 
-BioTool is a Chrome extension for biologists. It provides basic sequence
-manipulation for pasting into text fields. When dealing with sequences there is
-often an annoying middle step of pasting a sequence into a complement or
-reverse complement utility. This extension eliminates that step.
+[BioTool](
+https://chrome.google.com/webstore/detail/biotool/aenbjmfdhgnlpnpiiinajokpgchogmee)
+is a Chrome extension
+for biologists. It provides basic sequence manipulation for pasting into text
+fields. When dealing with sequences there is often an annoying middle step of
+pasting a sequence into a complement or reverse complement utility. This 
+extension eliminates that step.
 
 <p align="center">
     <img alt="BioTool at work in a context menu" src="images/contextMenuSample.png">
@@ -17,6 +20,10 @@ It is intended to be lightweight and fast. It doesn't parse anything on the
 clipboard until you ask it to, meaning it won't slow down your regular
 browsing. It only scans sequences once for all actions, so it should stay fast
 even if your sequences get big.
+
+[Download it](
+https://chrome.google.com/webstore/detail/biotool/aenbjmfdhgnlpnpiiinajokpgchogmee)
+from the Chrome Web Store.
 
 ## Operations
 
