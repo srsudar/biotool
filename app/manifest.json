@@ -31,6 +31,7 @@
             "js": [
                 "scripts/contentscript.js",
                 "bower_components/jquery/dist/jquery.min.js",
+                "bower_components/jquery/dist/jquery.min.map",
                 "bower_components/toastr/toastr.min.js"
             ],
             "run_at": "document_end",

@@ -9,42 +9,14 @@
  * http://stackoverflow.com/questions/7404366/how-do-i-insert-some-text-where-the-cursor-is
  */
 function insertTextAtCursor(text) {
+    // This will let us use the undo history. It doesn't seem to be working for
+    // the contentEditable="true" divs gmail uses, though. Text inputs but
+    // doesn't undo.
     var el = document.activeElement;
-    var val = el.value;
-    var startIndex;
-    var endIndex;
-    var range;
-    var sel;
-    if (typeof el.selectionStart === 'number' &&
-        typeof el.selectionEnd === 'number') {
-        // input and textarea
-        startIndex = el.selectionStart;
-        endIndex = el.selectionEnd;
-        el.value = val.slice(0, startIndex) + text + val.slice(endIndex);
-        // standard behavior is move to the end of the selection
-        el.selectionEnd = startIndex + text.length;
-    } else if (el.tagName === 'DIV') {
-        // We're pasting into an editable div, like gmail.
-        if (window.getSelection) {
-            sel = window.getSelection();
-            if (sel.getRangeAt && sel.rangeCount) {
-                range = sel.getRangeAt(0);
-                range.deleteContents();
-                var pastedText = document.createTextNode(text);
-                range.insertNode(pastedText);
-                range.setStartAfter(pastedText);
-                sel.removeAllRanges();
-                sel.addRange(range);
-            } else {
-                console.log('getRangeAt or rangeCount not defined');
-            }
-        } else if (document.selection && document.selection.createRange) {
-            document.selection.createRange().text = text;
-        }
-    } else {
-        // We aren't imitating pasting for this tag yet.
-        console.log('Not handling paste for tag type: ' + el.tagName);
-    }
+    var e = document.createEvent('TextEvent');
+    e.initTextEvent('textInput', true, true, null, text);
+    el.focus();
+    el.dispatchEvent(e);
 }
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
