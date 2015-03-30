@@ -6,8 +6,22 @@
     var allValidBases = 'atcgATCGuU';
     // A sequence with a single invalid base: f.
     var sequenceWithInvalidBase = 'atcfccgg';
+    var sequenceWithInvalidBaseQ = 'atcqccgg';
 
-    var unrecognizedBaseResponseF = 'unrecognized base: f';
+    /**
+     * Invokes fn and asserts that an InvalidBaseError was thrown with the base
+     * matching base.
+     */
+    var assertInvalidBaseErrorThrown = function(fn, base) {
+        try {
+            fn();
+        } catch (e) {
+            assert.equal(e.name, 'ErrorInvalidBase');
+            assert.equal(e.invalidBase, base);
+            return;  // so that we don't trigger the fail in case no error
+        }
+        assert.fail(true, false, 'did not throw an error');
+    };
 
     var oct4 =
     'GAGGTGAAACCGTCCCTAGGTGAGCCGTCTTTCCACCAGGCCCCCGGCTCGGGGTGCCCACCTTCCCCAT' +
@@ -420,10 +434,11 @@
             assert.equal(actual, target);
         });
 
-        it('Returns correct response in event of invalid base', function() {
-            var target = unrecognizedBaseResponseF;
-            var actual = functions.getReverse(sequenceWithInvalidBase);
-            assert.equal(actual, target);
+        it('Throws error in event of invalid base', function() {
+            assertInvalidBaseErrorThrown(
+                function() { functions.getReverse(sequenceWithInvalidBase); },
+                'f'
+            );
         });
 
     });
@@ -476,11 +491,13 @@
             assert.equal(actual, target);
         });
 
-        it('Returns correct response in event of invalid base', function() {
-            var original = sequenceWithInvalidBase;
-            var actual = functions.getComplement(original);
-            var target = unrecognizedBaseResponseF;
-            assert.equal(actual, target);
+        it('Throws error in event of invalid base', function() {
+            assertInvalidBaseErrorThrown(
+                function() {
+                    functions.getComplement(sequenceWithInvalidBaseQ);
+                },
+                'q'
+            );
         });
 
         it('complements simple string correctly matching case', function() {
@@ -514,11 +531,13 @@
             assert.equal(actual, target);
         });
 
-        it('Returns correct response in event of invalid base', function() {
-            var original = sequenceWithInvalidBase;
-            var target = unrecognizedBaseResponseF;
-            var actual = functions.getReverseComplement(original);
-            assert.equal(actual, target);
+        it('Throws error in event of invalid base', function() {
+            assertInvalidBaseErrorThrown(
+                function() {
+                    functions.getReverseComplement(sequenceWithInvalidBase);
+                },
+                'f'
+            );
         });
 
         it('Handles simple case', function() {
@@ -555,11 +574,11 @@
             assert.isFunction(functions.getClean);
         });
 
-        it('Returns correct response in event of invalid base', function() {
-            var original = sequenceWithInvalidBase;
-            var target = unrecognizedBaseResponseF;
-            var actual = functions.getClean(original);
-            assert.equal(actual, target);
+        it('Throws error in event of invalid base', function() {
+            assertInvalidBaseErrorThrown(
+                function() { functions.getClean(sequenceWithInvalidBase); },
+                'f'
+            );
         });
 
         it('accepts empty string', function() {
