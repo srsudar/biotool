@@ -9,8 +9,6 @@ var localFunctions = function() {
     // The regular expression for a valid single digit.
     var digitRE = /\d/;
     
-    var invalidBaseResponse = 'unrecognized base: ';
-
     // This will be the object we export.
     var pub = {};
 
@@ -26,6 +24,11 @@ var localFunctions = function() {
     pri.isValidBase = function(character, map) {
         var complementChar = map[character];
         return complementChar !== undefined;
+    };
+
+    pri.ErrorInvalidBase = function ErrorInvalidBase(base) {
+        this.name = 'ErrorInvalidBase';
+        this.invalidBase = base;
     };
 
     /**
@@ -81,7 +84,7 @@ var localFunctions = function() {
                     complementMap,
                     false);
             if (toAppend === null) {
-                return invalidBaseResponse + currentChar;
+                throw new pri.ErrorInvalidBase(currentChar);
             } else {
                 result += toAppend;
             }
@@ -103,7 +106,7 @@ var localFunctions = function() {
                     complementMap,
                     false);
             if (toAppend === null) {
-                return invalidBaseResponse + currentChar;
+                throw new pri.ErrorInvalidBase(currentChar);
             } else {
                 result += toAppend;
             }
@@ -153,7 +156,7 @@ var localFunctions = function() {
                     complementMap,
                     true);
             if (toAppend === null) {
-                return invalidBaseResponse + currentChar;
+                throw new pri.ErrorInvalidBase(currentChar);
             } else {
                 result += toAppend;
             }
@@ -174,7 +177,7 @@ var localFunctions = function() {
                 complementMap,
                 true);
             if (toAppend === null) {
-                return invalidBaseResponse + currentChar;
+                throw new pri.ErrorInvalidBase(currentChar);
             } else {
                 result += toAppend;
             }

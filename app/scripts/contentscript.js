@@ -20,8 +20,11 @@ function insertTextAtCursor(text) {
 }
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    if (request.data) {
+    if (request.type === 'paste') {
         insertTextAtCursor(request.data);
+    } else if (request.type === 'message') {
+        // currently we will assume that all of the messages are errors.
+        makeErrorToast(request.message);
     }
 });
 
@@ -51,9 +54,4 @@ function initializeToastr() {
 function makeErrorToast(text) {
     initializeToastr();
     toastr.error(text);
-}
-
-function makeSuccessToast(text) {
-    initializeToastr();
-    toastr.success(text);
 }
