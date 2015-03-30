@@ -1,3 +1,4 @@
+/* global toastr */
 'use strict';
 
 /**
@@ -18,15 +19,6 @@ function insertTextAtCursor(text) {
     el.focus();
     el.dispatchEvent(e);
 }
-
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    if (request.type === 'paste') {
-        insertTextAtCursor(request.data);
-    } else if (request.type === 'message') {
-        // currently we will assume that all of the messages are errors.
-        makeErrorToast(request.message);
-    }
-});
 
 /**
  * Configure our toasting library.
@@ -55,3 +47,12 @@ function makeErrorToast(text) {
     initializeToastr();
     toastr.error(text);
 }
+
+chrome.runtime.onMessage.addListener(function(request) {
+    if (request.type === 'paste') {
+        insertTextAtCursor(request.data);
+    } else if (request.type === 'message') {
+        // currently we will assume that all of the messages are errors.
+        makeErrorToast(request.message);
+    }
+});
