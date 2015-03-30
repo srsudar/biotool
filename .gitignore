@@ -6,7 +6,7 @@ logs
 
 # grunt
 .tmp/
-dist/
+/dist/
 package/
 
 # Runtime data
