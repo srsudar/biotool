@@ -14,7 +14,6 @@ function insertTextAtCursor(text) {
     var startIndex;
     var endIndex;
     var range;
-    var doc = el.ownerDocument;
     var sel;
     if (typeof el.selectionStart === 'number' &&
         typeof el.selectionEnd === 'number') {
@@ -54,3 +53,35 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
 });
 
+/**
+ * Configure our toasting library.
+ */
+function initializeToastr() {
+    toastr.options = {
+        'closeButton': false,
+        'debug': false,
+        'newestOnTop': false,
+        'progressBar': false,
+        'positionClass': 'toast-top-right',
+        'preventDuplicates': false,
+        'onclick': null,
+        'showDuration': '300',
+        'hideDuration': '1000',
+        'timeOut': '2000',
+        'extendedTimeOut': '1000',
+        'showEasing': 'swing',
+        'hideEasing': 'linear',
+        'showMethod': 'fadeIn',
+        'hideMethod': 'fadeOut'
+    };
+}
+
+function makeErrorToast(text) {
+    initializeToastr();
+    toastr.error(text);
+}
+
+function makeSuccessToast(text) {
+    initializeToastr();
+    toastr.success(text);
+}
