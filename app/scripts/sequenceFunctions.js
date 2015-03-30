@@ -26,7 +26,7 @@ var localFunctions = function() {
         return complementChar !== undefined;
     };
 
-    pri.ErrorInvalidBase = function ErrorInvalidBase(base) {
+    pub.ErrorInvalidBase = function ErrorInvalidBase(base) {
         this.name = 'ErrorInvalidBase';
         this.invalidBase = base;
     };
@@ -84,7 +84,7 @@ var localFunctions = function() {
                     complementMap,
                     false);
             if (toAppend === null) {
-                throw new pri.ErrorInvalidBase(currentChar);
+                throw new pub.ErrorInvalidBase(currentChar);
             } else {
                 result += toAppend;
             }
@@ -106,7 +106,7 @@ var localFunctions = function() {
                     complementMap,
                     false);
             if (toAppend === null) {
-                throw new pri.ErrorInvalidBase(currentChar);
+                throw new pub.ErrorInvalidBase(currentChar);
             } else {
                 result += toAppend;
             }
@@ -156,7 +156,7 @@ var localFunctions = function() {
                     complementMap,
                     true);
             if (toAppend === null) {
-                throw new pri.ErrorInvalidBase(currentChar);
+                throw new pub.ErrorInvalidBase(currentChar);
             } else {
                 result += toAppend;
             }
@@ -177,7 +177,7 @@ var localFunctions = function() {
                 complementMap,
                 true);
             if (toAppend === null) {
-                throw new pri.ErrorInvalidBase(currentChar);
+                throw new pub.ErrorInvalidBase(currentChar);
             } else {
                 result += toAppend;
             }

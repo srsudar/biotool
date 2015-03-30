@@ -65,25 +65,28 @@ function onClickHandler(info, tab) {
         console.log('could not load sequence functions, will cause errors');
     }
     console.log('clipboardContent: ' + clipboardContent);
-    if (info.menuItemId === 'pasteClean') {
-        console.log('clicked paste clean');
-        var clean = functions.getClean(clipboardContent);
-        sendPasteToContentScript(clean);
-    } else if (info.menuItemId === 'pasteReverse') {
-        console.log('clicked paste reverse');
-        var reverse = functions.getReverse(clipboardContent);
-        sendPasteToContentScript(reverse);
-    } else if (info.menuItemId === 'pasteComplement') {
-        console.log('clicked paste complement');
-        var complement = functions.getComplement(clipboardContent);
-        sendPasteToContentScript(complement);
-    } else if (info.menuItemId === 'pasteReverseComplement') {
-        console.log('clicked paste reverse complement');
-        var reverseComplement =
-            functions.getReverseComplement(clipboardContent);
-        sendPasteToContentScript(reverseComplement);
-    } else {
-        console.log('unrecognized context menu id: ' + info.menuItemId);
+    try {
+        var toPaste;
+        if (info.menuItemId === 'pasteClean') {
+            console.log('clicked paste clean');
+            toPaste = functions.getClean(clipboardContent);
+        } else if (info.menuItemId === 'pasteReverse') {
+            console.log('clicked paste reverse');
+            toPaste = functions.getReverse(clipboardContent);
+        } else if (info.menuItemId === 'pasteComplement') {
+            console.log('clicked paste complement');
+            toPaste = functions.getComplement(clipboardContent);
+        } else if (info.menuItemId === 'pasteReverseComplement') {
+            console.log('clicked paste reverse complement');
+            toPaste = functions.getReverseComplement(clipboardContent);
+        } else {
+            console.log('unrecognized context menu id: ' + info.menuItemId);
+        }
+        sendPasteToContentScript(toPaste);
+    } catch (e) {
+        if (e.name === 'ErrorInvalidBase') {
+            sendMessageToUser('Unrecognized base: ' + e.invalidBase);
+        }
     }
 }
 
