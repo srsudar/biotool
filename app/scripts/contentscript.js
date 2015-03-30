@@ -18,17 +18,12 @@ function insertTextAtCursor(text) {
     var sel;
     if (typeof el.selectionStart === 'number' &&
         typeof el.selectionEnd === 'number') {
+        // input and textarea
         startIndex = el.selectionStart;
         endIndex = el.selectionEnd;
         el.value = val.slice(0, startIndex) + text + val.slice(endIndex);
         // standard behavior is move to the end of the selection
         el.selectionEnd = startIndex + text.length;
-    } else if (doc.selection !== undefined && doc.selection.createRange) {
-        el.focus();
-        range = doc.selection.createRange();
-        range.collapse(false);
-        range.text = text;
-        range.select();
     } else if (el.tagName === 'DIV') {
         // We're pasting into an editable div, like gmail.
         if (window.getSelection) {
